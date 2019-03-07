@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="ejazeP" class="com.huawei.cps.cpsinterface.c2bpayment.utils.ejaze.EjazePojo" scope = "prototype">
+      <property name="msisdn" value="777777711"/>
+      <property name="login_id" value="tklmpesa"/>
+      <property name="password" value="telKom100"/>
+      <property name="ext_code" value="9594"/>
+      <property name="pretups_url" value="http://192.168.27.64:9898/pretups/C2SReceiver" />
+   </bean>
+   
+   <bean id="regurls" class="com.huawei.cps.cpsinterface.c2bpayment.client.RegisterURLPojo" scope = "prototype">
+       <property name="spid" value="101056" />
+       <property name="sp_password" value="Telkom@123" />
+       <property name="serviceid" value="101056000" />
+       <property name="shortcode" value="777711" />
+       <property name="url" value="http://10.22.38.14:8443/LipaNaMPesa/services/PaymentValidationAndComfirmation"/>
+   </bean>
+   
+   <bean id="logD" class="com.huawei.cps.cpsinterface.c2bpayment.pojos.logging" scope="prototype">
+       <property name="debug" value=""/>
+       <property name="error" value=""/>
+   </bean>
+   
+   <bean id="c2bConfirm" class="com.huawei.cps.cpsinterface.c2bpayment.pojos.comfirmation.ConfirmMessagePojo" scope="prototype">
+       <property name="message" value="C2B Payment Transaction XXX result received." />
+       <property name="max" value="20000"/>
+       <property name="min" value="5"/>
+       <property name="min_allowed_ejaze_balance" value="500000" />
+       <property name="short_code" value=""/>
+   </bean>
+   
+   <bean id="c2bValidate" class="com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationPojo" scope="prototype">
+       <property name="message" value="C2B Payment Transaction XXX result received." />
+       <property name="max" value="20000"/>
+       <property name="min" value="5"/>
+       <property name="min_allowed_ejaze_balance" value="500000" />
+       <property name="short_code" value=""/>
+   </bean>
+   
+   <bean id="sendMailReceipients" class="com.huawei.cps.cpsinterface.c2bpayment.utils.Mail.MailPojo" scope="prototype">
+       <property name="to" value="akanyiri@telkom.co.ke, akassim@telkom.co.ke, rwmwendia@telkom.co.ke, emmwaiwa@telkom.co.ke, enyaata@telkom.co.ke, gkanyua@telkom.co.ke, hngochi@telkom.co.ke"/>
+       <property name="cc" value="ewkimani@telkom.co.ke, eokanini@telkom.co.ke, jkrukaria@telkom.co.ke, elmokaya@telkom.co.ke, mwangijw@telkom.co.ke, jnngatia@telkom.co.ke, rkmwangi@telkom.co.ke" />
+       <property name="bcc" value=""/>     
+   </bean>
+   
+   <bean id="treversal" class="com.huawei.cps.cpsinterface.c2bpayment.client.reversal.ReversalPOJO" scope="prototype">
+       <property name="spid" value="107031" />
+       <property name="sp_password" value="Safaricom123!" />
+       <property name="serviceid" value="107031000" />
+       <property name="shortcode" value="107040" />
+       <property name="url" value="http://10.22.38.14:8080/LipaNaMPesa/services/PaymentValidationAndComfirmation"/>
+   </bean>
+   
+   <bean id="topUpLimits" class="" scope="prototype" >
+       <property name="max" value="10000"/>
+       <property name="min" value="5"/>
+   </bean>
+   
+<!--   <bean id="validation" class="">
+       <property name="max" value="20000"/>
+       <property name="min" value="5"/>
+       <property name="min_allowed_ejaze_balance" value="500000" />
+       <property name="short_code" value=""/>
+   </bean>-->
+
+</beans>

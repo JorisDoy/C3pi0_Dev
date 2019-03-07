@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/E:/Work/other/M-PESA_API/CBPInterface_C2BPaymentValidationAndConfirmation.wsdl" uri="src/conf/xml-resources/web-services/NewWebServiceFromWSDL/wsdl/CBPInterface_C2BPaymentValidationAndConfirmation.wsdl"/>
+</catalog>

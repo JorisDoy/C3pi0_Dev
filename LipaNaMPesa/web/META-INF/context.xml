@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/LipaNaMPesa"/>
+<Resource name="jdbc/vastel_content" auth="Container" type="javax.sql.DataSource" 
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" removeAbandoned="true"
+              maxActive="100" maxIdle="5" maxWait="1000" username="postgres" password="" 
+              driverClassName="org.postgresql.Driver" removeAbandonedTimeout="60" logAbandoned="true"
+              url="jdbc:postgresql://10.22.38.14:5432/telkom_buy_airtime" />

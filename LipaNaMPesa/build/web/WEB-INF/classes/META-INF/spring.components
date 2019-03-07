@@ -1,0 +1,8 @@
+#
+#Fri Feb 16 09:49:33 EAT 2018
+com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationRequest=javax.xml.bind.annotation.XmlAccessorType,javax.xml.bind.annotation.XmlType,javax.xml.bind.annotation.XmlRootElement
+com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationResult=javax.xml.bind.annotation.XmlAccessorType,javax.xml.bind.annotation.XmlType,javax.xml.bind.annotation.XmlRootElement
+com.huawei.cps.cpsinterface.c2bpayment.C2BPaymentValidationAndComfirmationImpl=javax.jws.WebService
+com.huawei.cps.cpsinterface.c2bpayment.pojos.comfirmation.C2BPaymentConfirmationRequest=javax.xml.bind.annotation.XmlAccessorType,javax.xml.bind.annotation.XmlType,javax.xml.bind.annotation.XmlRootElement
+com.huawei.cps.cpsinterface.c2bpayment.ObjectFactory=javax.xml.bind.annotation.XmlRegistry
+com.huawei.cps.cpsinterface.c2bpayment.C2BPaymentValidationAndComfirmation=javax.jws.WebService,javax.jws.soap.SOAPBinding,javax.xml.bind.annotation.XmlSeeAlso

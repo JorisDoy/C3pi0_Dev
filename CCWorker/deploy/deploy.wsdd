@@ -1,0 +1,9 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+    <service name="LTE" provider="java:RPC">
+        <parameter name="className" value="com.lte.service.LTE"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+</deployment>
+

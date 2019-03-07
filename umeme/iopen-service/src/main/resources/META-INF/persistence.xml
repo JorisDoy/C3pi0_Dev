@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+<persistence-unit name="iopen" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.indra.iopen.model.Actividade</class>
+        <class>com.indra.iopen.model.ActividadePK</class>
+        <class>com.indra.iopen.model.Cliente</class>
+        <class>com.indra.iopen.model.ClienteIdentificador</class>
+        <class>com.indra.iopen.model.ClienteIdentificadorPK</class>
+        <class>com.indra.iopen.model.ClienteProfile</class>
+        <class>com.indra.iopen.model.ClienteProfilePK</class>
+        <class>com.indra.iopen.model.ControlAccesoInternet</class>
+        <class>com.indra.iopen.model.CosteExp</class>
+        <class>com.indra.iopen.model.CosteExpPK</class>
+        <class>com.indra.iopen.model.CuentasCu</class>
+        <class>com.indra.iopen.model.DireccionCta</class>
+        <class>com.indra.iopen.model.DistrictDepto</class>
+        <class>com.indra.iopen.model.EmployeeProfile</class>
+        <class>com.indra.iopen.model.EmployeeProfilePK</class>
+        <class>com.indra.iopen.model.Estado</class>
+        <class>com.indra.iopen.model.Expediente</class>
+        <class>com.indra.iopen.model.Fincas</class>
+        <class>com.indra.iopen.model.FincasExp</class>
+        <class>com.indra.iopen.model.FincasExpPK</class>
+        <class>com.indra.iopen.model.ImagenesHtml</class>
+        <class>com.indra.iopen.model.InvGroup</class>
+        <class>com.indra.iopen.model.IopenApplication</class>
+        <class>com.indra.iopen.model.IopenApplicationDoc</class>
+        <class>com.indra.iopen.model.IopenApplicationDocPK</class>
+        <class>com.indra.iopen.model.LcaClientData</class>
+        <class>com.indra.iopen.model.LcaClientDataPK</class>
+        <class>com.indra.iopen.model.Objeto</class>
+        <class>com.indra.iopen.model.ObjetoPK</class>
+        <class>com.indra.iopen.model.PasswordResetToken</class>
+        <class>com.indra.iopen.model.PerfilObjeto</class>
+        <class>com.indra.iopen.model.PerfilObjetoPK</class>
+        <class>com.indra.iopen.model.Perfile</class>
+        <class>com.indra.iopen.model.PresupuestosExped</class>
+        <class>com.indra.iopen.model.PresupuestosExpedPK</class>
+        <class>com.indra.iopen.model.RemPayroll</class>
+        <class>com.indra.iopen.model.SumExp</class>
+        <class>com.indra.iopen.model.SumExpPK</class>
+        <class>com.indra.iopen.model.Sumcon</class>
+        <!-- <class>com.indra.iopen.model.BdgActOfiAux</class> -->
+        <class>com.indra.iopen.model.TipCliTipSolicMapping</class>
+        <class>com.indra.iopen.model.TipCliTipSolicMappingPK</class>
+        <class>com.indra.iopen.model.Tipo</class>
+        <class>com.indra.iopen.model.Usuario</class>
+        <class>com.indra.iopen.model.UsuarioPerfil</class>
+        <class>com.indra.iopen.model.UsuarioPerfilPK</class>
+        <class>com.indra.iopen.model.UsuarioPerfilSec</class>
+        <class>com.indra.iopen.model.UsuarioPerfilSecPK</class>
+        <class>com.indra.iopen.model.IopenApplicationStatus</class>
+        <class>com.indra.iopen.model.Codigo</class>
+        <class>com.indra.iopen.model.IopenApplicationMessage</class>
+        <class>com.indra.iopen.model.IopenApplicationMessagePK</class>
+        <class>com.indra.iopen.model.Aparato</class>
+		<class>com.indra.iopen.model.AparatoPK</class>
+		<class>com.indra.iopen.model.ApmedidaAp</class>
+		<class>com.indra.iopen.model.ApmedidaCo</class>
+		<class>com.indra.iopen.model.ExpedComm</class>
+		<class>com.indra.iopen.model.ExpedCommPK</class>
+		<class>com.indra.iopen.model.FincasPerLect</class>
+		<class>com.indra.iopen.model.FincasPerLectPK</class>
+		<class>com.indra.iopen.model.Haparato</class>
+		<class>com.indra.iopen.model.HaparatoPK</class>
+		<class>com.indra.iopen.model.InspectionResult</class>
+		<class>com.indra.iopen.model.Ordene</class>
+		<class>com.indra.iopen.model.Puntomed</class>
+		<class>com.indra.iopen.model.PuntomedPK</class>
+		<class>com.indra.iopen.model.Suministro</class>
+		<class>com.indra.iopen.model.SuministroTipCsmo</class>
+		<class>com.indra.iopen.model.SuministroTipCsmoPK</class>
+		<class>com.indra.iopen.model.TrabpendAf</class>
+		<class>com.indra.iopen.model.Visita</class>
+		<class>com.indra.iopen.model.VisitaPK</class>
+		<class>com.indra.iopen.model.Callejero</class>
+		<class>com.indra.iopen.model.Localidade</class>
+		<class>com.indra.iopen.model.Municipio</class>
+		<class>com.indra.iopen.model.InspectionResultTipObra</class>
+		<class>com.indra.iopen.model.Recibo</class>
+		<class>com.indra.iopen.model.GrupoEst</class>
+		<class>com.indra.iopen.model.GrupoEstPK</class>
+		<class>com.indra.iopen.model.AnTrabpendAf</class>
+		<class>com.indra.iopen.model.AnTrabpendAfPK</class>
+		<class>com.indra.iopen.model.Personal</class>
+		<class>com.indra.iopen.model.Mtarifa</class>
+		<class>com.indra.iopen.model.ApaTipCarac</class>
+		<class>com.indra.iopen.model.ApaTipCaracPK</class>
+		<class>com.indra.iopen.model.Depto</class>
+		<class>com.indra.iopen.model.IopenApplicationStage</class>
+		<class>com.indra.iopen.model.BillDispatch</class>
+		<class>com.indra.iopen.model.BillDispatchPK</class>
+		<class>com.indra.iopen.model.ConsumoContratado</class>
+		<class>com.indra.iopen.model.ConsumoContratadoPK</class>
+		<class>com.indra.iopen.model.GrConsumoContratado</class>
+		<class>com.indra.iopen.model.PayingAccount</class>
+		<class>com.indra.iopen.model.SumconRetailAccess</class>
+		<class>com.indra.iopen.model.IopenDistrictContact</class>
+		<class>com.indra.iopen.model.ims.SgdInstalacion</class>
+		<class>com.indra.iopen.model.ims.SgdInstalacionPK</class>
+		<class>com.indra.iopen.model.ims.AcoSum</class>
+		<class>com.indra.iopen.model.ims.GiAviso</class>
+		<class>com.indra.iopen.model.ims.GiTTipAviso</class>
+		<class>com.indra.iopen.model.ims.SgdAcometida</class>
+		<class>com.indra.iopen.model.ims.SgdAcometidaPK</class>
+		<class>com.indra.iopen.model.ims.GiTUltimo</class>
+		<class>com.indra.iopen.model.ims.GiTUltimoPK</class>
+		<class>com.indra.iopen.model.ims.GiAvisosInstalacion</class>
+		<class>com.indra.iopen.model.ims.GiAvisosInstalacionPK</class>
+		<class>com.indra.iopen.model.ims.GiMessage</class>
+		<class>com.indra.iopen.model.ims.GiMessagePK</class>
+		<class>com.indra.iopen.model.ims.GiOt</class>
+		<class>com.indra.iopen.model.ims.GiTIntHorario</class>
+		<class>com.indra.iopen.model.ims.Provincia</class>
+		<class>com.indra.iopen.model.ims.SgdIncidencia</class>
+		<class>com.indra.iopen.model.ims.SgdValor</class>
+		<class>com.indra.iopen.model.ims.SgdValorPK</class>
+		<class>com.indra.iopen.model.ims.SgdCentro</class>
+		<class>com.indra.iopen.model.ims.SgdCentroPK</class>
+		<class>com.indra.iopen.model.ims.SgdRelacionCentro</class>
+		<class>com.indra.iopen.model.ims.SgdRelacionCentroPK</class>
+		<class>com.indra.iopen.model.ImpConcepto</class>
+		<class>com.indra.iopen.model.ImpConceptoPK</class>
+		<class>com.indra.iopen.model.Unicom</class>
+		<class>com.indra.iopen.model.ims.SgdSector</class>
+		<class>com.indra.iopen.model.ims.GiAvisosLlamada</class>
+		<class>com.indra.iopen.model.ims.GiCentroLoc</class>
+		<class>com.indra.iopen.model.ims.GiCentroLocPK</class>
+		<class>com.indra.iopen.model.BdgActOfiAux</class>
+		<class>com.indra.iopen.model.DatosAct</class>
+		<class>com.indra.iopen.model.DatosActPK</class>
+		<class>com.indra.iopen.model.DatosRecl</class>
+		<class>com.indra.iopen.model.EstRec</class>
+		<class>com.indra.iopen.model.EstRecPK</class>
+		<class>com.indra.iopen.model.TrabpendRe</class>
+		<class>com.indra.iopen.model.EbContact</class>
+		<class>com.indra.iopen.model.ims.GiFeeder</class>
+		<class>com.indra.iopen.model.Imagene</class>
+		<class>com.indra.iopen.model.ImagenesDispatch</class>
+		<class>com.indra.iopen.model.ImagenesXml</class>
+		<class>com.indra.iopen.model.Deposito</class>
+		<class>com.indra.iopen.model.GisIopenMapping</class>
+
+        
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <!-- value="create" to build a new database on each run; value="update" to modify an existing database; value="create-drop" means the same as "create" but also drops tables when Hibernate closes; value="validate" makes no changes to the database -->
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update"/> -->
+            <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+            <property name="hibernate.connection.charSet" value="UTF-8"/>
+            <property name="hibernate.synonyms" value="true"/>
+            <!-- Uncomment the following two properties for JBoss only -->
+            <!-- property name="hibernate.validator.apply_to_ddl" value="false" /-->
+            <!-- property name="hibernate.validator.autoregister_listeners" value="false" /-->
+        </properties>
+    </persistence-unit>
+</persistence>

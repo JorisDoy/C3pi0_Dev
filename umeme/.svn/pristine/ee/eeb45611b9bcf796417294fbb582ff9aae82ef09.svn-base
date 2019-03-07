@@ -1,0 +1,27 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="ehcache.xsd" 
+    updateCheck="false" 
+    monitoring="autodetect" 
+    dynamicConfig="true">
+    <cache name="iopen" 
+        maxEntriesLocalHeap="10000" 
+        maxEntriesLocalDisk="1000" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="20" 
+        timeToIdleSeconds="300" 
+        timeToLiveSeconds="600" 
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+    	<persistence strategy="localTempSwap"/>
+	</cache>
+	<cache name="iopenPersistent" 
+	   maxEntriesLocalHeap="500" 
+	   eternal="false" 
+	   overflowToDisk="true" 
+	   diskPersistent="true" 
+	   timeToIdleSeconds="300" 
+	   timeToLiveSeconds="600" 
+	   diskExpiryThreadIntervalSeconds="1" 
+	   memoryStoreEvictionPolicy="LFU">
+   </cache>
+</ehcache>

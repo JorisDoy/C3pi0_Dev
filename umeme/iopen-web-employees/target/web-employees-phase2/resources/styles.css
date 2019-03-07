@@ -1,0 +1,28 @@
+.has-errors {
+	color: #a94442;
+}
+
+input.has-errors {
+	border-color: #a94442;
+}
+
+.text-uppercase { text-transform: uppercase; }
+
+html, body{
+	overflow-y: hidden;/*remove default browser scroll bar  */
+}
+
+.body-pattern { 
+	height: 100%;
+	overflow-y: auto;	
+}
+#main{
+	height:initial;
+	min-height:500px;
+}
+#footer {
+	bottom: 0px;
+	position: relative; 
+	width: 100%;
+	/* margin-left:-10px; */
+}

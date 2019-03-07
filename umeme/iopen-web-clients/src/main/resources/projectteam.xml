@@ -1,0 +1,164 @@
+<Statement>
+<statementDestination>
+<destinationCustomer>
+</destinationCustomer>
+<destinationAddress>
+</destinationAddress>
+</statementDestination>
+<Page numberOfPages=" 1"  pageNumber=" 1" >
+<spaces space1=" " >
+</spaces>
+<statementIdentification statementID="56181171"  statementOriginality="1"  statementDate="07/20/2015" >
+<statementAccount accountNumber="2657561" >
+<accountHolder customerCode="27284976"  customerLastName="20150410"  customerMiddleName="27284976NAME"  customerFirstName="27284976NAME"  customerTitle=" " >
+</accountHolder>
+<accountAddresses>
+<Address cod_direccion="2157560"  tip_direccion="AT002" >
+<Address addressLine1=" "  addressLine2="NALUFENYA RD ZONE, JINJA WEST"  addressLine3="JINJA"  addressLine4="UGANDA" >
+</Address>
+</Address>
+</accountAddresses>
+<accountHistory>
+</accountHistory>
+</statementAccount>
+</statementIdentification>
+<statementRecipient>
+</statementRecipient>
+<statementInvoices>
+<Invoice InvoiceID="291276059"  InvoiceSequenceNumber="0"  invoiceBillingDayDescription="Fri"  invoiceBillingDayNumber="26"  invoiceType="TR010"  LastPayDate="20/07/2015"  ZeroFields="0.00"  invoiceDueDate="03/08/2015"  consumptionFromDate="26/08/14"  consumptionToDate="26/09/14"  DaysBilled="(31 Days)"  TarrifType="DOMESTIC"  OfficialTarrif="10.1"  negativeAmounts="-"  invoiceBillingDate="20/07/2015"  invoiceBillDate="20/07/2015"  PaymentDueDisplay="-51,716.12"  PaymentDueDisplayDesc="PAYMENT DUE-------------------------"  CurrencySymbol=" "  serviceCredit="100000.00"  creditAppliedToThirtyDay="0" >
+<Service ServiceID="203698368"  OldAccountNumber="0" >
+<ChargeAccount IndChargeAccount="1" >
+</ChargeAccount>
+<serviceType serviceTypeCode="SV100"  serviceTypeDescription="ELECTRICITY SALES" >
+</serviceType>
+<DeliveryAddress addressLine1="382-5000032382, 0/0"  addressLine2="MUSOTO ROAD, MUSOTO"  addressLine3="MBALE TOWN"  addressLine4="UGANDA" >
+</DeliveryAddress>
+<serviceRate rateCode="110"  rateDescription="DOMESTIC" >
+</serviceRate>
+<serviceContractingCustomer customerCode="29869178" >
+</serviceContractingCustomer>
+<SupplyPoint ServicePointID="6317756" >
+<RouteItinerary RouteItinNumber="7-4189"  Itinerary="4189"  RouteDescription="[F0003]-[TX0001]-A-0001-"  RouteDescriptionList="6, 11, 15, 16"  ItineraryDesc="Tx 10(A,B), Tx 11(A)"  PremiseSequence="116"  SupplyGroup="GR - 4" >
+</RouteItinerary>
+<serviceMeterInformation>
+<MeterInformation meterID="6523440"  meterNumber="U1322634" >
+<meterReads>
+<meterConsumption meterConstant="1"  meterConsumptionValue="0" >
+<meterConsumtionType meterConsumptionTypeCode="CO001"  meterConsumptionTypeDescription="ENERGY" >
+</meterConsumtionType>
+<meterActualReading meterReadingDate="26/09/2014" >
+<meterReadingType meterReadingTypeDescription="ACTUAL" >
+</meterReadingType>
+</meterActualReading>
+<meterPreviousReading meterReadingDate="26/08/2014" >
+<meterReadingType meterReadingTypeDescription="ACTUAL" >
+</meterReadingType>
+</meterPreviousReading>
+</meterConsumption>
+</meterReads>
+</MeterInformation>
+</serviceMeterInformation>
+</SupplyPoint>
+</Service>
+<securityDeposit>
+<securityDepositInCurrency currencySymbol="$"  currencyAmount="0.00" >
+</securityDepositInCurrency>
+</securityDeposit>
+<paymentsReceived>
+<paymentsReceivedInCurrency currencySymbol="$"  paymentsReceivedDescription="PAYMENT REC'D"  currencyAmount="0.00" >
+</paymentsReceivedInCurrency>
+</paymentsReceived>
+<balanceBfwd>
+<balanceBfwdInCurrency currencySymbol="$"  balanceBroughtForwardDescription="BAL. B/FWD"  currencyAmount="-51,716.12" >
+</balanceBfwdInCurrency>
+</balanceBfwd>
+<totalBalance>
+<totalBalanceInCurrency currencySymbol="$"  currencyAmountInternal="-51716.12"  currencyAmount="-51,716.12" >
+</totalBalanceInCurrency>
+</totalBalance>
+<balanceOver90Days>
+<balanceOver90DaysInCurrency currencySymbol="$"  currencyAmount="0.00" >
+</balanceOver90DaysInCurrency>
+</balanceOver90Days>
+<balanceOver60Days>
+<balanceOver60DaysInCurrency currencySymbol="$"  currencyAmount="0.00" >
+</balanceOver60DaysInCurrency>
+</balanceOver60Days>
+<balanceOver30Days>
+<balanceOver30DaysInCurrency currencySymbol="$"  currencyAmount="0.00" >
+</balanceOver30DaysInCurrency>
+</balanceOver30Days>
+<billMessage message="Supply may be DISCONNECTED without further notice as bill payment is overdue. Consider any fallen wires as live. Avoid any contact with them and call 0800185186 immediately. Approximate breakdown of charges: UMEME 17% UEDCL / UETCL 12% Generators 71%" >
+</billMessage>
+<businessOfficeAddress CommercialOffice="AREA:    MBALE"  slash="/" >
+</businessOfficeAddress>
+<invoiceItems DatosCharge="@"  PaymentDueInternal="0.00" >
+<Item InvoiceID="291276059"  itemPercentage="0.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="0.00"  itemDetails="?"  itemBlockIndicator="0"  presentReading="66"  previousReading="66"  meterConstant="1"  meterNumber="U1322634"  ItemSequenceNumber="0" >
+<itemCode itemCodeCode="CC110"  itemCodeDescription="ENERGY" >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="150.00" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="0.00" >
+</itemTotal>
+</Item>
+<Item InvoiceID="291276059"  itemPercentage="0.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="0.00"  itemDetails="?"  itemBlockIndicator="0"  ItemSequenceNumber="4" >
+<itemCode itemCodeCode="CC300"  itemCodeDescription="FUEL ADJ" >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="-10.30" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="0.00" >
+</itemTotal>
+</Item>
+<Item InvoiceID="291276059"  itemPercentage="0.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="0.00"  itemDetails="?"  itemBlockIndicator="0"  ItemSequenceNumber="5" >
+<itemCode itemCodeCode="CC310"  itemCodeDescription="INFLATION ADJ" >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="0.30" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="0.00" >
+</itemTotal>
+</Item>
+<Item InvoiceID="291276059"  itemPercentage="0.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="0.00"  itemDetails="?"  itemBlockIndicator="0"  ItemSequenceNumber="6" >
+<itemCode itemCodeCode="CC320"  itemCodeDescription="FOREX EX ADJ" >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="7.40" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="0.00" >
+</itemTotal>
+</Item>
+<Item InvoiceID="291276059"  itemPercentage="0.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="0.00"  itemDetails="?"  itemBlockIndicator="0"  ItemSequenceNumber="7" >
+<itemCode itemCodeCode="CC100"  itemCodeDescription="SERVICE CHARGE" >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="0.00" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="3,472.00" >
+</itemTotal>
+</Item>
+<Item InvoiceID="291276059"  itemPercentage="18.00%"  itemBilledUsage="0"  ItemUnits="?"  itemCalculationBase="3472.00"  itemDetails="?"  itemBlockIndicator="0"  ItemSequenceNumber="8" >
+<itemCode itemCodeCode="CT800"  itemCodeDescription="V.A.T." >
+</itemCode>
+<itemPrice currencySymbol="$"  currencyAmount="0.00" >
+</itemPrice>
+<itemTotal currencySymbol="$"  currencyAmount="624.96" >
+</itemTotal>
+</Item>
+</invoiceItems>
+<invoiceTotal>
+<invoiceTotalInCurrency currencySymbol="$"  currencyAmount="44,186.92" >
+</invoiceTotalInCurrency>
+</invoiceTotal>
+<invoicePaidAmount>
+<invoicePaidInCurrency currencySymbol="$"  currencyAmount="0.00" >
+</invoicePaidInCurrency>
+</invoicePaidAmount>
+<invoiceDebt>
+<invoiceDebtInCurrency currencySymbol="$"  currencyAmount="4,096.96" >
+</invoiceDebtInCurrency>
+</invoiceDebt>
+<statementResponsibilityShare AccountPaymentID="4391952" >
+</statementResponsibilityShare>
+</Invoice>
+</statementInvoices>
+<statementTotals>
+</statementTotals>
+</Page>
+</Statement>

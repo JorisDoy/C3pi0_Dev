@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="umeme_base" template="/WEB-INF/layout/base_page.jsp">
+		<put-attribute name="header" value="/WEB-INF/layout/umeme_header.jsp" />
+		<put-attribute name="body_header" value="/WEB-INF/layout/body_header.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/layout/umeme_footer.jsp" />
+		<put-attribute name="init_scripts" value="/WEB-INF/layout/umeme_bottom_scripts.jsp"/>
+	</definition>
+	
+	<definition name="new_application" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/new_application.jsp" />
+	</definition>
+	
+	<definition name="application_steps" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/application_steps.jsp" />
+	</definition>
+	
+	<definition name="home" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+	 <definition name="application_successful" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/application_successful.jsp" />
+     </definition>
+
+	<definition name="login" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/login.jsp" />
+	</definition>
+	
+	<definition name="signup" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/signup.jsp" />
+	</definition>
+	
+	<definition name="signup_success" extends="umeme_base">
+		<put-attribute name="content" value="/WEB-INF/views/signup_success.jsp" />
+	</definition>
+	
+	 <definition name="my_applications" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/my_applications.jsp" />
+     </definition> 
+     
+     <definition name="client_search_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/client_search_application.jsp" />
+     </definition>      
+	
+	<definition name="my_incomplete_applications" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/my_incomplete_applications.jsp" />
+     </definition> 
+     
+	 <definition name="user_profile" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/user_profile.jsp" />
+     </definition>
+     
+     <definition name="client_applications" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/client_applications.jsp" />
+     </definition>
+     
+       
+     <definition name="client_view_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/client_view_application.jsp" />
+     </definition>
+     
+     <definition name="existing_client_new_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/existing_client_new_application.jsp" />
+     </definition>
+     
+     <definition name="employee_view_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/employee_view_application.jsp" />
+     </definition>
+     
+     <definition name="employee_viewonly_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/employee_viewonly_application.jsp" />
+     </definition>
+	
+     <definition name="cancel_application" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/cancel_application.jsp" />
+     </definition>
+	
+	 <definition name="error" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/error.jsp" />
+     </definition> 
+	
+	 <definition name="change_password" extends="umeme_base">
+		 <put-attribute name="content" value="/WEB-INF/views/change_password.jsp" />
+	 </definition>
+	 
+	 <definition name="password_reset_request" extends="umeme_base">
+		 <put-attribute name="content" value="/WEB-INF/views/password_reset_request.jsp" />
+	 </definition>
+	 
+	 <definition name="password_reset_request_confirmation" extends="umeme_base">
+		 <put-attribute name="content" value="/WEB-INF/views/password_reset_request_confirm.jsp" />
+	 </definition>
+	 
+	 <definition name="password_reset_change_request" extends="umeme_base">
+		 <put-attribute name="content" value="/WEB-INF/views/password_reset_change_request.jsp" />
+	 </definition>
+	 
+	 <definition name="password_reset_change_request_confirmation" extends="umeme_base">
+		 <put-attribute name="content" value="/WEB-INF/views/password_reset_change_request_confirm.jsp" />
+	 </definition>
+	
+	 <definition name="inspection_schedule_list" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/inspection_schedule_list.jsp" />
+     </definition> 
+	
+	 <definition name="schedule_application_inspection" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/schedule_application_inspection.jsp" />
+     </definition> 
+	
+	 <definition name="scheduled_for_inspection" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/scheduled_for_inspection.jsp" />
+     </definition> 
+	
+	 <definition name="view_scheduledfor_inspection" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/view_scheduledfor_inspection.jsp" />
+     </definition>  
+     
+     <definition name="inspection_results" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/inspection_results.jsp" />
+     </definition>
+     
+	 <definition name="connection_schedule_list" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/connection_schedule_list.jsp" />
+     </definition>
+     
+     <definition name="schedule_connection" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/schedule_connection.jsp" />
+     </definition>  
+	
+	 <definition name="scheduled_for_connection" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/scheduled_for_connection.jsp" />
+     </definition>   
+	
+	 <definition name="connection_results" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/connection_results.jsp" />
+     </definition>   
+	
+	 <definition name="application_status_information" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/application_status_information.jsp" />
+     </definition>   
+	
+	 <definition name="application_pending_invoices" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/application_pending_invoices.jsp" />
+     </definition>  
+     
+	 <definition name="view_batch_list" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/view_batch_list.jsp" />
+     </definition> 
+     
+	 <definition name="search_application_stage" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/search_application_stage.jsp" />
+     </definition>  
+     
+	 <definition name="rejected_inspections" extends="umeme_base">
+        <put-attribute name="content" value="/WEB-INF/views/rejected_inspections.jsp" />
+     </definition> 
+
+</tiles-definitions>

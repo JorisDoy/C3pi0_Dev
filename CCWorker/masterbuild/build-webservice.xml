@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ModifyBalReturnAllBal - Sub build" basedir=".">
+
+<property name="class2run" value="CCWorker"/>
+
+	<path id="classpath.servlet">
+		<pathelement location="." />
+		<fileset dir="${javax.servlet.home.dir}" >
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+
+	<path id="classpath.axis">
+	<!--
+		<fileset dir="${absolute.axis.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	-->
+		<fileset dir="${javamail.home.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${jaf.home.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement path="${absolute.axis.lib.dir}" />
+	</path>
+
+		<taskdef
+			resource="axis-tasks.properties"
+			classpathref="classpath.axis" />
+
+	<target name="clean.webservice" description="Delete webservice build directory">
+		<delete dir="${webservice.build.dir}" />
+		<delete dir="${webservice.dist.dir}" />
+	</target>
+
+	<target name="make.webservice.dir" depends="clean.webservice" description="Create webservice build directory">
+		<mkdir dir="${webservice.build.dir}" />
+		<mkdir dir="${webservice.dist.dir}" />
+		<mkdir dir="${generated.wsdl.dir}" />
+	</target>
+
+	<target name="compile.webservice" depends="make.webservice.dir" description="Compile webservice src">
+		<javac destdir="${webservice.build.dir}" nowarn="${build.compiler.nowarn}" debug="${build.compiler.compile.with.debug}">
+		<src path="${webservice.src.dir}" />
+		<classpath>
+			<path refid="classpath.servlet" />
+		</classpath>
+		</javac>
+	</target>
+
+	<target name="create.webservice.jar" depends="compile.webservice" description="Create webservice jar">
+		<jar destfile="${webservice.jar.file}">
+			<fileset dir="${webservice.build.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<zipgroupfileset dir="${javamail.home.dir}" includes="**/*.jar" />
+		</jar>
+	</target>
+	
+</project>

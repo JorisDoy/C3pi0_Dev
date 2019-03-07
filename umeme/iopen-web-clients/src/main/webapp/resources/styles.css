@@ -1,0 +1,42 @@
+.has-errors {
+    color: #a94442;
+}
+
+input.has-errors {
+    border-color: #a94442;
+}
+
+.text-uppercase { text-transform: uppercase; }
+
+html, body{
+    overflow-y: hidden;/*remove default browser scroll bar  */
+}
+
+.body-pattern { 
+    height: 100%;
+    overflow-y: auto;   
+}
+#main{
+    height:initial;
+    min-height:500px;
+}
+#footer {
+    bottom: 0px;
+    position: relative; 
+    width: 100%;
+    /* margin-left:-10px; */
+}
+
+@media (max-width: 979px) and (min-width: 768px){
+    .row-fluid .span3 {
+        width: 30.92817679558% !important;
+        *width: 30.92817679558% !important
+    }
+}
+
+select,
+input,
+textarea,
+.uneditable-input {
+    width: 220px !important;
+}

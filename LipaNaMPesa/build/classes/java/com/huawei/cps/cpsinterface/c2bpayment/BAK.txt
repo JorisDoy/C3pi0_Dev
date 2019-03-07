@@ -1,0 +1,446 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.huawei.cps.cpsinterface.c2bpayment;
+
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.comfirmation.C2BPaymentConfirmationRequest;
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.comfirmation.ConfirmMessagePojo;
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationPojo;
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationRequest;
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationRequest.KYCInfo;
+import com.huawei.cps.cpsinterface.c2bpayment.pojos.validation.C2BPaymentValidationResult;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.Configs;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.Mail.SendMail;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.MailMapper;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.Props;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ValidateInput;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.db.Inserts;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.db.Selects;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ejaze.EjazeBalance;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ejaze.EjazeClient;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ejaze.ResponsePojos.Balance;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ejaze.ResponsePojos.Recharge;
+import com.huawei.cps.cpsinterface.c2bpayment.utils.ocs.userprofile.UserProfileClient;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import javax.jws.WebService;
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import net.spy.memcached.MemcachedClient;
+
+/**
+ *
+ * @author gaddafi
+ */
+@WebService
+public class C2BPaymentValidationAndComfirmationImpl implements C2BPaymentValidationAndComfirmation {
+
+    private final Logger logger = Logger.getLogger(C2BPaymentValidationAndComfirmationImpl.class.getName());
+    // Challenger
+    private DataSource datasource;
+    private InitialContext ctx;
+    private Props props = new Props();
+    private Runnable sm;
+    private Thread mailer;
+
+    public void initDB() {
+        try {
+            this.ctx = new InitialContext();
+            if (ctx == null) {
+                throw new Exception("No Context");
+            }
+            datasource = (org.apache.tomcat.jdbc.pool.DataSource) ctx.lookup("java:/comp/env/jdbc/telkom_buy_airtime");
+            if (datasource == null) {
+                logger.fatal("No Context for Database Context!!!!!!!!");
+            }
+        } catch (NamingException ex) {
+            logger.fatal(ex.getMessage());
+        } catch (Exception ex) {
+            logger.fatal(ex.getMessage());
+        }
+    }
+
+    @Override
+    public String confirmC2BPayment(C2BPaymentConfirmationRequest c2BPaymenConfirmationRequest) {
+        // Validation already occured during Validation phase
+        // Proceed to topup
+        
+        initDB();
+        Inserts ins = new Inserts();
+        ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+        ConfirmMessagePojo cmp = (ConfirmMessagePojo) context.getBean("c2bConfirm");
+        String msisdn = "";
+        //String ejaze_msiString = "";
+            if (!c2BPaymenConfirmationRequest.getBillRefNumber().startsWith("0")) {
+                msisdn = "0" + c2BPaymenConfirmationRequest.getBillRefNumber();
+            } else if (c2BPaymenConfirmationRequest.getBillRefNumber().startsWith("0")) {
+                msisdn = c2BPaymenConfirmationRequest.getBillRefNumber().replaceAll("^0", "254");
+            } else {
+                msisdn = c2BPaymenConfirmationRequest.getBillRefNumber();
+            }
+
+        //boolean is_validated = false;
+
+        //try {
+            // Confirm Validation was done before confirm
+//            MemcachedClient mcc = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
+//            String saf_trans = (String) mcc.get(c2BPaymenConfirmationRequest.getMSISDN());
+//            if (saf_trans != null) {
+//                if (saf_trans.equals(c2BPaymenConfirmationRequest.getTransID())) {
+//                    is_validated = true;
+//                }
+//            }
+//        } catch (IOException ex) {
+//            logger.debug("There was a problem with memcache, opting to query the transaction from DB: " + ex.getMessage());
+//        }
+//        if (is_validated) {
+//            logger.info("Topping up number from memcache");
+//            ins.insertConfirmationData(datasource, c2BPaymenConfirmationRequest.getTransType(), c2BPaymenConfirmationRequest.getTransID(),
+//                    c2BPaymenConfirmationRequest.getTransTime(), c2BPaymenConfirmationRequest.getTransAmount(), c2BPaymenConfirmationRequest.getBusinessShortCode(),
+//                    c2BPaymenConfirmationRequest.getBillRefNumber(), c2BPaymenConfirmationRequest.getInvoiceNumber(), c2BPaymenConfirmationRequest.getOrgAccountBalance(),
+//                    c2BPaymenConfirmationRequest.getThirdPartyTransID(), c2BPaymenConfirmationRequest.getMSISDN(), "Replace with KYC", Configs.TRANSACTSTATUS_SUCCESSFUL, Configs.ISVALIDATEDTRUE, c2BPaymenConfirmationRequest.getThirdPartyTransID());
+//            recharge(Configs.PRETUPSURLRECHARGE, c2BPaymenConfirmationRequest.getBillRefNumber().replaceAll("^254", "0"), c2BPaymenConfirmationRequest.getTransAmount());
+//        } 
+//else { // check from database
+            Selects sel = new Selects();
+            if (sel.isTransactionIdValid(datasource, c2BPaymenConfirmationRequest.getTransID())) {
+                if(recharge(Configs.PRETUPSURLRECHARGE, msisdn.replaceAll("^254", "0"), c2BPaymenConfirmationRequest.getTransAmount())){
+                    ins.insertConfirmationData(datasource, c2BPaymenConfirmationRequest.getTransType(), c2BPaymenConfirmationRequest.getTransID(),
+                        c2BPaymenConfirmationRequest.getTransTime(), c2BPaymenConfirmationRequest.getTransAmount(), c2BPaymenConfirmationRequest.getBusinessShortCode(),
+                        msisdn, c2BPaymenConfirmationRequest.getInvoiceNumber(), c2BPaymenConfirmationRequest.getOrgAccountBalance(),
+                        c2BPaymenConfirmationRequest.getThirdPartyTransID(), c2BPaymenConfirmationRequest.getMSISDN(), "Replace with KYC", Configs.TRANSACTSTATUS_SUCCESSFUL, Configs.ISVALIDATEDTRUE, c2BPaymenConfirmationRequest.getThirdPartyTransID());
+                    logger.info("Topped up number from database");
+                } else{
+                    ins.insertConfirmationData(datasource, c2BPaymenConfirmationRequest.getTransType(), c2BPaymenConfirmationRequest.getTransID(),
+                        c2BPaymenConfirmationRequest.getTransTime(), c2BPaymenConfirmationRequest.getTransAmount(), c2BPaymenConfirmationRequest.getBusinessShortCode(),
+                        msisdn, c2BPaymenConfirmationRequest.getInvoiceNumber(), c2BPaymenConfirmationRequest.getOrgAccountBalance(),
+                        c2BPaymenConfirmationRequest.getThirdPartyTransID(), c2BPaymenConfirmationRequest.getMSISDN(), "Replace with KYC", Configs.TRANSACTSTATUS_FAILED + " on Ejaze", Configs.ISVALIDATEDTRUE, c2BPaymenConfirmationRequest.getThirdPartyTransID());
+                    logger.info("Topup failed on ejaze");
+                }
+                
+            } else {
+                ins.insertConfirmationData(datasource, c2BPaymenConfirmationRequest.getTransType(), c2BPaymenConfirmationRequest.getTransID(),
+                        c2BPaymenConfirmationRequest.getTransTime(), c2BPaymenConfirmationRequest.getTransAmount(), c2BPaymenConfirmationRequest.getBusinessShortCode(),
+                        msisdn, c2BPaymenConfirmationRequest.getInvoiceNumber(), c2BPaymenConfirmationRequest.getOrgAccountBalance(),
+                        c2BPaymenConfirmationRequest.getThirdPartyTransID(), c2BPaymenConfirmationRequest.getMSISDN(), "Replace with KYC", Configs.TRANSACTSTATUS_FAILED, Configs.ISVALIDATEDFALSE, c2BPaymenConfirmationRequest.getThirdPartyTransID());
+                logger.error("Could not top up number because it was not validated: " + c2BPaymenConfirmationRequest.getBillRefNumber());
+            }
+        //}
+
+        // Do something with the data
+        return cmp.getMessage().replace("XXX", c2BPaymenConfirmationRequest.getBillRefNumber()); //To change body of generated methods, choose Tools | Templates.        
+    }
+
+    public boolean recharge(String url, String msisdn, String amount) {
+        EjazeClient ec = new EjazeClient();
+        String message = "";
+
+        Recharge recharge = ec.request(url, msisdn.replaceAll("^254", "0"), amount);
+        
+        if(!recharge.isIsSuccessful()){
+            
+            SendMail mail = new SendMail(props);
+            HashMap<String, String> receipients = new HashMap<>();
+            receipients.put("cc", props.getMail_to_sales() + ", " + props.getMail_to_marketing() + "," + props.getMail_to_finance());
+            receipients.put("to", props.getMail_to_invas() + ", " + props.getMail_to_om());
+            
+            if(recharge.getTXNSTATUS() == null){
+                message = "Ejaze failed to respond. Following topup will fail:<br/><b>MSISDN </b>" + msisdn + "<br/><b>Amount </b>" + amount;
+            } else{
+                message = "Ejaze returned an error with status: " +recharge.getTXNSTATUS() + " during recharge. Transaction for following will fail <br/>" + "Customer Number: " + msisdn + "<br/> Aitime purchase amount: " + amount + "<br/>";
+            }
+            sm = new MailMapper(receipients, message, props);
+            mailer = new Thread(sm);
+            mailer.start();
+            //mail.send(receipients, "Ejaze returned an error with status: " +recharge.getTXNSTATUS() + " during recharge. Transaction for following will fail <br/>" + "Customer Number: " + msisdn + "<br/> Aitime purchase amount: " + amount + "<br/>");
+            logger.error("Ejaze failed to respond or there was an error during balance query");
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    @Override
+    public C2BPaymentValidationResult validateC2BPayment(C2BPaymentValidationRequest c2BPaymentValidationRequest) {
+        initDB();
+
+        Inserts ins = new Inserts();
+        ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+        C2BPaymentValidationPojo c2bv = (C2BPaymentValidationPojo) context.getBean("c2bValidate");
+        // Get unique transaction id
+        String trans_id = transactionId();
+        // Check whether number is valid
+        ValidateInput vi = new ValidateInput();
+
+        String cnum = c2BPaymentValidationRequest.getBillRefNumber().trim().replaceAll("[^a-zA-Z0-9]", "");
+
+        String amount = c2BPaymentValidationRequest.getTransAmount();
+
+        float transamount = 0;
+        try {
+            transamount = Float.parseFloat(amount);
+        } catch (NumberFormatException ex) {
+            logger.error(ex.getMessage());
+        }
+
+        String saf_transid = c2BPaymentValidationRequest.getTransID();
+
+        String trans_time = c2BPaymentValidationRequest.getTransTime();
+
+        String business_short_code = c2BPaymentValidationRequest.getBusinessShortCode();
+
+        //String invoice_number = c2BPaymentValidationRequest.getInvoiceNumber();
+        String saf_msisdn = c2BPaymentValidationRequest.getMSISDN();
+
+        List<C2BPaymentValidationRequest.KYCInfo> kyc_info = c2BPaymentValidationRequest.getKYCInfo();
+
+        String fname = "", mname = "", lname = "";
+
+        for (C2BPaymentValidationRequest.KYCInfo kyc : kyc_info) {
+            if (kyc.getKYCName().toLowerCase().contains("first name")) {
+                fname = kyc.getKYCValue();
+            }
+            if (kyc.getKYCName().toLowerCase().contains("middle name")) {
+                mname = kyc.getKYCValue();
+            }
+            if (kyc.getKYCName().toLowerCase().contains("last name")) {
+                lname = kyc.getKYCValue();
+            }
+        }
+
+        logger.info("!!!!!!!!!!!!!!!!!!!!!!!!\nI have received the following request\n!!!!!!!!!!!!!!!!!!!!!!!!");
+        logger.info("Customer number: " + cnum);
+        logger.info("Top up amount: " + transamount);
+        logger.info("Safaricom Transaction ID: " + saf_transid);
+        logger.info("Safaricom MSISDN: " + saf_msisdn);
+        logger.info("Transaction time: " + trans_time);
+        logger.info("Business short code: " + business_short_code);
+        logger.info("KYC INF First Name: " + fname);
+        logger.info("KYC INF Middle Name: " + mname);
+        logger.info("KYC INF Lirst Name: " + lname);
+
+        // Check ejaze balance
+        EjazeBalance getbal = new EjazeBalance();
+        Balance bal = getbal.request(Configs.PRETUPSURL);
+        if (bal.isIsSuccessful()) {
+            // check if the balance is less
+            // if less stop
+            if (bal.getBALANCE() < transamount) {
+                // Send e-mail
+                //SendMail mail = new SendMail(props);
+                HashMap<String, String> receipients = new HashMap<>();
+                receipients.put("to", props.getMail_to_sales() + ", " + props.getMail_to_marketing() + "," + props.getMail_to_finance());
+                receipients.put("cc", props.getMail_to_invas() + ", " + props.getMail_to_om());
+                sm = new MailMapper(receipients, "Folowing purchase failed due to lack of E-jaze float. <br/>" + "Customer Number: " + cnum + "<br/> Aitime purchase amount: " + transamount + "<br/>" + "Current Ejaze balance: " + bal.getBALANCE(), props);
+                //mail.send(receipients, );
+                mailer = new Thread(sm);
+                mailer.start();
+                ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), c2BPaymentValidationRequest.getBillRefNumber(), c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "No E-jaze float");
+
+                logger.error("Ejaze balance is less than requested amount, Transaction stop for: " + cnum + " MPesa receipt: " + saf_transid + " MPesa MSISDN: " + saf_msisdn);
+                return respond("5", "No E-jaze float", trans_id);
+            }
+            
+            // remove this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (bal.getBALANCE() < 3000) {
+                //SendMail mail = new SendMail(props);
+                
+                HashMap<String, String> receipients = new HashMap<>();
+                receipients.put("to", props.getMail_to_sales() + ", " + props.getMail_to_marketing() + "," + props.getMail_to_finance());
+                receipients.put("cc", props.getMail_to_invas() + ", " + props.getMail_to_om());
+                sm = new MailMapper(receipients, props.getEjaze_low_balance().replace("%", bal.getBALANCE() + ""), props);
+                logger.info("Ejaze balance below set min thresh hold! Sending e-mail");
+                //mail.send(receipients, );
+            }
+        } else { //Check with Elizabeth what to do next
+            String message;
+            // Check whether its a timeout issue
+            if(bal.getTXNSTATUS() == null){
+                // issue is timeout! is E-jaze up?
+                message = "Ejaze timed out during balance query (Validation step)";
+            } else{
+                message = "Ejaze returned an error with status: " + bal.getTXNSTATUS() + " during balance query. Transaction for following will fail <br/>" + "Customer Number: " + cnum + "<br/> Aitime purchase amount: " + transamount + "<br/>" + "Current Ejaze balance: " + bal.getBALANCE();
+            }
+            logger.error("Issue on E-jaze\n E-jaze status: " + bal.getTXNSTATUS());
+            //SendMail mail = new SendMail(props);
+            HashMap<String, String> receipients = new HashMap<>();
+            receipients.put("cc", props.getMail_to_sales() + ", " + props.getMail_to_marketing() + "," + props.getMail_to_finance());
+            receipients.put("to", props.getMail_to_invas() + ", " + props.getMail_to_om());
+            sm = new MailMapper(receipients, message, props);
+            mailer = new Thread(sm);
+            mailer.start();
+            //mail.send(receipients, "Ejaze returned an error with status: " + bal.getTXNSTATUS() + " during balance query. Transaction for following will fail <br/>" + "Customer Number: " + cnum + "<br/> Aitime purchase amount: " + transamount + "<br/>" + "Current Ejaze balance: " + bal.getBALANCE());
+            logger.error(message);
+            ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), c2BPaymentValidationRequest.getBillRefNumber(), c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Ejaze problem");
+            return respond("6", "Ejaze problem", trans_id);
+        }
+
+        if (vi.isValidInput(cnum, "[0-9]*") && cnum.length() != 0 && (cnum.length() == 10 || cnum.length() == 12 || cnum.length() == 9)) {
+            // Verify with OCS the status of the number
+            String msisdn = "";
+            if (!cnum.startsWith("0")) {
+                msisdn = "0" + cnum;
+            } else if (cnum.startsWith("0")) {
+                msisdn = cnum.replaceAll("^0", "254");
+            } else {
+                msisdn = cnum;
+            }
+            UserProfileClient upc = new UserProfileClient();
+            HashMap<String, String> status = upc.request(msisdn);
+            //**
+            // Check whether request was successfull
+            if (status.get("flag").equals("1")) { // means failed to reliably determine msisdn profile
+                logger.warn("Number profile not on OCS. OCS return code: " + status.get("rc") + " OCS returned message: " + status.get("rm") + " request id was: " + status.get("ri"));
+                logger.error("Unable to determine OCS profile fo number " + cnum);
+                // alert deceloper
+                //sendSMS("254770168633", "Number " + cnum + "could not be profiled");
+                // db
+                ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), c2BPaymentValidationRequest.getBillRefNumber(), c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Failed to get OCS profile for MSISDN. Error related to OCS");
+                sendSMS(msisdn, props.getCustomer_number_format_invalid());
+                return respond("9", "Failed to get OCS profile for MSISDN. Error related to OCS", trans_id);
+            } else { // means OCS profile was determined
+                // check whether prepaid or postpaid
+                if (status.get("pp").equals("1")) {
+                    // number is postpaid
+                    logger.error(cnum + " is postpaid, cannot top up. Validation fails!");
+                    sendSMS(saf_msisdn, props.getCustomer_number_postpaid());
+                    // db
+                    ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Postpaid number provided. Offer not available for postpaid");
+                    return respond("10", "Postpaid number provided. Offer not available for postpaid", trans_id);
+                } else {
+                    switch (status.get("s")) {
+                        case "B":
+                            // save to DB
+                            sendSMS(saf_msisdn, props.getCustomer_in_state_b());
+                            ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Terminated number");
+                            return respond("3", "Terminated number", trans_id);
+                        case "":
+                            // save to DB
+                            sendSMS(saf_msisdn, cnum + " is not provisioned");
+                            ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Number not provisioned yet");
+                            return respond("4", "Number not provisioned yet", trans_id);
+
+                        default:
+                            // save to DB
+
+                            if (transamount < Integer.parseInt(c2bv.getMin())) {
+                                sendSMS(saf_msisdn, props.getCustomer_purchase_invalid_amount());
+                                ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Amount " + transamount + " requested by " + cnum + " is bellow allowed min");
+                                logger.warn("Amount " + transamount + " requested by " + cnum + " is bellow allowed min");
+                                return respond("7", "Amount below allowed min", trans_id);
+                            } else if (transamount > Integer.parseInt(c2bv.getMax())) {
+                                sendSMS(saf_msisdn, props.getCustomer_purchase_invalid_amount());
+                                ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Amount above allowed max");
+                                logger.warn("Amount " + transamount + " requested by " + cnum + " is above allowed max");
+                                return respond("8", "Amount above allowed max", trans_id);
+                            } else {
+//                                try {
+//                                    // brewing good stuff
+//                                    MemcachedClient mcc = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
+//                                    mcc.add(cnum, 120, saf_transid);
+//                                    mcc.shutdown();
+//                                } catch (IOException ex) {
+//                                    logger.fatal("Error on memcache: " + ex.getMessage());
+//                                }
+                                ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), msisdn/*c2BPaymentValidationRequest.getBillRefNumber()*/, c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_SUCCESSFUL, "Successful");
+                                return respond("0", "Success", trans_id);
+                            }
+                    }
+                }
+            }
+        } else {
+            // save to DB
+            ins.insertValidationData(datasource, c2BPaymentValidationRequest.getTransType(), c2BPaymentValidationRequest.getTransID(), c2BPaymentValidationRequest.getTransTime(), c2BPaymentValidationRequest.getTransAmount(), c2BPaymentValidationRequest.getBusinessShortCode(), c2BPaymentValidationRequest.getBillRefNumber(), c2BPaymentValidationRequest.getInvoiceNumber(), c2BPaymentValidationRequest.getMSISDN(), fname + " " + lname + " " + mname, trans_id, c2BPaymentValidationRequest.getTransTime(), Configs.TRANSACTSTATUS_FAILED, "Invalid number");
+
+            sendSMS(saf_msisdn, props.getCustomer_number_format_invalid());
+
+            return respond("1", "Invalid number", trans_id);
+        }
+        //return v_result;
+    }
+
+    public C2BPaymentValidationResult respond(String result_code, String result_description, String trans_id) {
+        C2BPaymentValidationResult c2bvr = new C2BPaymentValidationResult();
+        c2bvr.setResultCode(result_code);
+        c2bvr.setResultDesc(result_description);
+        c2bvr.setThirdPartyTransID(trans_id);
+        return c2bvr;
+    }
+
+    public String transactionId() {
+        java.util.Date date = new java.util.Date();
+        long time = date.getTime();
+        String trans_id = time + "" + (int) (Math.random() * 10000000);
+        return trans_id;
+    }
+
+    public String buildContentEjazeFloatLow(String content) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello,<br/><br/>");
+        sb.append(props.getEjaze_low_balance().replace("%", content)).append("<br/><br/>");
+        sb.append("<br/><br/>This is an automatically generated mail. Please dont reply.<br/><br/>BR,<br/>Telkom paybill service");
+        return sb.toString();
+    }
+    
+    public String buildContentEjazeFailed(String content) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello,<br/><br/>");
+        sb.append(props.getEjaze_low_balance().replace("%", content)).append("<br/><br/>");
+        sb.append("<br/><br/>This is an automatically generated mail. Please dont reply.<br/><br/>BR,<br/>Telkom paybill service");
+        return sb.toString();
+    }
+    
+    public String buildContentEjazeFailed(String bal, String msisdn, String status){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello,<br/><br/>");
+        sb.append("Ejaze returned an error with status: ").append(status).append(" during balance query. Transaction for following has failed<br/>Customer Number: ").append(msisdn).append("<br/>Aitime<br/>purchase amount: 20.0<br/>Current Ejaze balance:").append(bal).append("").append("<br/><br/>");
+        sb.append("<br/><br/>This is an automatically generated mail. Please dont reply.<br/><br/>BR,<br/>Telkom paybill service");
+        return sb.toString();
+    }
+
+    public void sendSMS(String msisdn, String message) {
+        try {
+            String url = "http://" + props.getKannel_ip() + ":" + props.getKannel_port() + "/cgi-bin/sendsms?username=" + props.getKannel_user() + "&password=" + props.getKannel_password() + "&to=" + msisdn + "&from=" + props.getShortcode() + "&text=" + URLEncoder.encode(message, "UTF-8") + "";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            // For later use (Logging)
+            int responseCode = con.getResponseCode();
+            ValidateInput vi = new ValidateInput();
+            if(!vi.isValidInput("" + responseCode, "20[0-9]")){
+                logger.error("Kannel responded with the following result code: " + responseCode + " send sms not successful");
+            }
+        } catch (MalformedURLException ex) {
+            logger.error("Could not send SMS, error is: " + ex.getMessage());
+        } catch (ProtocolException ex) {
+            logger.error("Could not send SMS, error is: " + ex.getMessage());
+        } catch (IOException ex) {
+            logger.error("Could not send SMS, error is: " + ex.getMessage());
+        }
+    }
+
+    public MemcachedClient getMemCache() {
+        MemcachedClient mcc = null;
+        try {
+            mcc = new MemcachedClient(new InetSocketAddress("127.0.0.1", 11211));
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(C2BPaymentValidationAndComfirmationImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mcc;
+    }
+}
